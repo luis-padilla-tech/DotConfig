@@ -5,7 +5,7 @@ from libqtile.utils import guess_terminal
 from libqtile import qtile
 from pathlib import Path
 import time
-import colors as my_themes
+import qtile_themes
 import random
 import os
 import subprocess
@@ -13,8 +13,7 @@ import subprocess
 from libqtile.log_utils import logger
 from libqtile import hook
 
-
-theme = my_themes.Dracula
+theme = qtile_themes.Orange
 
 @hook.subscribe.startup_once
 def on_start_of_qtile():
@@ -23,11 +22,13 @@ def on_start_of_qtile():
 
 
 @hook.subscribe.startup
-async def on_start_or_restart():
-    logger.info(f"{theme} is the theme and {theme.wallpaper_directory} is the dir")
-    if theme.wallpaper_directory is not None:
+def on_start_or_restart():
+    logger.warning(f"{theme} is the theme")
+    if theme.wp_dir is not None:
 
-        wallpapers = [file for file in  Path(theme.wallpaper_directory).expanduser().iterdir()]
+        logger.info(f'wallpaper directory {theme.wp_dir}')
+
+        wallpapers = [file for file in  Path(theme.wp_dir).expanduser().iterdir()]
         wallpaper_path = random.choice(wallpapers)
 
         for screen in qtile.screens:
@@ -37,18 +38,28 @@ mod = "mod4"
 terminal = guess_terminal()
 
 groups = [
-    Group(name='home', label=''),
-    Group(name='terminal', label='', matches=[
-        Match(title='Alacritty'),
-    ]),
+    Group(name='home', label=''),
+    Group(name='terminal', label=''),
     Group(name='browser', label='', matches=[
+        Match(wm_class='brave-browser'),
+    ]),
+    Group(name='code', label='', matches=[
+        Match(wm_class='vscodium'),
+    ]),
+    Group(name='games', label='', matches=[
+        Match(wm_class='desmume')
+    ]),
+    Group(name='spotify', label='', matches=[
         Match(wm_class='firefox'),
     ]),
-    Group(name='explorer', label=''),
-    Group(name='code', label='', matches=[
-        Match(wm_class='Code'),
+    Group(name='rss', label='', matches=[
+        Match(wm_class='liferea')
     ]),
-    Group(name='games', label=''),
+    Group(name='manager', label='', matches=[
+        Match(wm_class='keepass2')
+    ]),
+    Group(name='vpn', label='')
+
 ]
 
 keys = [
@@ -83,6 +94,7 @@ keys = [
         desc="Toggle between split and unsplit sides of stack",
     ),
     Key([mod], 'e', lazy.spawn(f'{terminal} -e ranger'), desc='Open File Explorer'),
+    Key([mod], 'b', lazy.spawn('brave'), desc='Open Browser'),
     Key([mod], "Return", lazy.spawn(terminal), desc="Launch terminal"),
     Key([mod], "Tab", lazy.next_layout(), desc="Toggle between layouts"),
     Key([mod], "q", lazy.window.kill(), desc="Kill focused window"),
@@ -119,8 +131,8 @@ layouts = [
 
 widget_defaults = dict(
     font='fira code',
-    fontsize=20,
-    padding=3,
+    fontsize=24,
+    padding=5,
     background=theme.background,
     foreground=theme.foreground
 )
@@ -134,7 +146,7 @@ screens = [
                 widget.GroupBox(highlight_method='block', disable_drag=True, active=theme.active, inactive=theme.inactive, block_highlight_text_color=theme.foreground),
                 widget.Prompt(),
                 widget.Spacer(length=bar.STRETCH),
-                widget.Net(interface='enp0s3', prefix='M',format='{down}:{up}'),
+                widget.Net(interface='wlan0', prefix='M',format='{down}:{up}'),
                 widget.TextBox(text=SEP_ICON),
                 widget.CPU(format='{load_percent}%'),
                 widget.TextBox(text=SEP_ICON),
@@ -142,9 +154,32 @@ screens = [
                 widget.TextBox(text=SEP_ICON),
                 widget.Clock(format="%H:%M %m/%d/%Y"),
                 widget.TextBox(text=SEP_ICON),
-                widget.QuickExit(default_text='',countdown_format='{}'),
+                widget.PulseVolume(limit_max_volume=True),
+                widget.TextBox(text=SEP_ICON),
+                widget.QuickExit(default_text='',countdown_format='{}'),
             ],
-            24,
+            36,
+        ),
+    ),
+ Screen(
+        top=bar.Bar(
+            [
+                widget.GroupBox(highlight_method='block', disable_drag=True, active=theme.active, inactive=theme.inactive, block_highlight_text_color=theme.foreground),
+                widget.Prompt(),
+                widget.Spacer(length=bar.STRETCH),
+                widget.Net(interface='wlan0', prefix='M',format='{down}:{up}'),
+                widget.TextBox(text=SEP_ICON),
+                widget.CPU(format='{load_percent}%'),
+                widget.TextBox(text=SEP_ICON),
+                widget.Memory(measure_mem='G', format='{MemUsed:.2f}{mm}'),
+                widget.TextBox(text=SEP_ICON),
+                widget.Clock(format="%H:%M %m/%d/%Y"),
+                widget.TextBox(text=SEP_ICON),
+                widget.PulseVolume(limit_max_volume=True),
+                widget.TextBox(text=SEP_ICON),
+                widget.QuickExit(default_text='',countdown_format='{}'),
+            ],
+            36,
         ),
     ),
 ]

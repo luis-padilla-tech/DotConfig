@@ -1,11 +1,10 @@
 from dataclasses import dataclass, field
 
 @dataclass
-class ThemeColor:
+class QtileTheme:
     """
     Qtile Color Theme picker
     """
-
     foreground:str
     """Main foreground/font color"""
 
@@ -21,5 +20,5 @@ class ThemeColor:
     colors:list = field(default_factory=lambda: [])
     """List of extra colors you may want to use that may not fall under the other fields"""
 
-    wallpaper_directory:str = field(default_factory=lambda: None)
+    wp_dir:str = field(default_factory=lambda: None)
     """Directory of wallpapers"""
