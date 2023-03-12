@@ -1,0 +1,34 @@
+#! /bin/sh
+
+${HOME}/.screenlayout/main.sh &
+pgrep -x sxhkd > /dev/null || sxhkd &
+picom &
+killall redshift -q
+redshift &
+python ${HOME}/.config/polybar/polybar_wallpaper.py &
+${HOME}/.config/polybar/launch.sh &
+
+for monitor in $(bspc query -M); do
+    bspc monitor $monitor -d home browser messages games code music rss pw vpn
+done
+
+bspc config window_gap          10
+bspc config border_width         0
+
+bspc config focus_follows_pointer true
+bspc config pointer_follows_focus true
+
+bspc config split_ratio            0.60
+bspc config borderless_monocle     true
+bspc config gapless_monocle        true
+
+
+
+bspc rule -a Brave-browser    desktop=^2
+bspc rule -a discord  desktop=^3
+bspc rule -a Steam    desktop=^4
+bspc rule -a Desmume    desktop=^4
+bspc rule -a VSCodium desktop=^5
+bspc rule -a firefox  desktop=^6
+bspc rule -a Liferea  desktop=^7
+

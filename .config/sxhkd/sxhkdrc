@@ -1,0 +1,84 @@
+#
+# wm independent hotkeys
+#
+
+# make sxhkd reload its configuration files:
+super + Escape
+	pkill -USR1 -x sxhkd
+
+# lock screen
+super + l
+	betterlockscreen -l blur
+
+# terminal emulator
+super + Return
+	alacritty
+
+# program launcher
+super + {r}
+	dmenu_run
+
+# file browser
+super + {e}
+	alacritty -e ranger
+
+super + m
+	com.spotify.Client
+
+# browser
+super + {b}
+	brave
+
+
+#
+# BSPWM
+# Delete if not using bspwm
+#
+
+# restart bspwm
+super + alt + {r}
+	bspc wm -r
+
+# quit bspwm
+super + alt + {q}
+	bspc quit
+
+# close and kill windows/app
+super + {_,shift + }q
+	bspc node -{c,k}
+
+# alternate between the tiled and monocle layout
+super + m
+	bspc desktop -l next
+
+# move app to new monitor
+super + {Left,Right}
+	bspc node -m {prev,next} --follow
+
+# set the window state
+super + {t,shift + t,s,f}
+	bspc node -t {tiled,pseudo_tiled,floating,fullscreen}
+
+# change to workspace x on focused monitor
+super + {1-9,0}
+	bspc desktop -f focused:'^{1-9,0}'
+
+# move app to workspace x on focused app monitor and switch to workspace x
+super + shift + {1-9,0}
+	bspc node -d focused:'^{1-9,0}' --follow
+
+# expand a window by moving one of its side outward
+super + alt + {h,j,k,l}
+	bspc node -z {left -20 0,bottom 0 20,top 0 -20,right 20 0}
+
+# contract a window by moving one of its side inward
+super + alt + shift + {h,j,k,l}
+	bspc node -z {right -20 0,top 0 20,bottom 0 -20,left 20 0}
+
+# change layout
+super + @space
+	bsp-layout next
+
+# cycle through apps in current desktop
+super + Tab
+	bspc node -f next.active

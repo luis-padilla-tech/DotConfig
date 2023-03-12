@@ -1,0 +1,72 @@
+# make sxhkd reload its configuration files:
+super + Escape
+	pkill -USR1 -x sxhkd
+
+# browser
+super + b
+	brave
+
+# config editor
+super + c
+	vscodium ~/.config/
+
+# discord
+super + d
+	com.discordapp.Discord
+
+# file browser
+super + e
+	alacritty -e ranger
+
+# steam games
+super + g
+	com.valvesoftware.Steam
+
+# password manager
+super + p
+	keepass
+
+super + l
+	betterlockscreen -l
+
+# music 
+super + m
+	com.spotify.Client
+
+# rss
+super + r
+	liferea
+
+# task manager
+super + x
+	alacritty -e htop
+
+# terminal emulator
+super + @space
+	alacritty
+
+# program launcher
+super + Tab
+	dmenu_run
+
+Print
+	flameshot gui
+
+XF86AudioMute
+    pactl set-sink-mute @DEFAULT_SINK@ toggle
+
+XF86Audio{Raise,Lower}Volume
+    pactl set-sink-volume @DEFAULT_SINK@ {+,-}5%
+
+XF86AudioPlay
+	dbus-send --type=method_call --dest=org.mpris.MediaPlayer2.spotify /org/mpris/MediaPlayer2 org.mpris.MediaPlayer2.Player.PlayPause
+
+XF86AudioPrev
+	dbus-send --type=method_call --dest=org.mpris.MediaPlayer2.spotify /org/mpris/MediaPlayer2 org.mpris.MediaPlayer2.Player.Previous
+
+XF86AudioNext
+	dbus-send --type=method_call --dest=org.mpris.MediaPlayer2.spotify /org/mpris/MediaPlayer2 org.mpris.MediaPlayer2.Player.Next
+
+
+
+

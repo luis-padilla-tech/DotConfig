@@ -1,6 +1,9 @@
 #!/bin/bash
 
-
-xrandr --output eDP-1 --scale 0.75x0.75
-redshift &
+${HOME}/.screenlayout/main.sh &
+sxhkd -c ~/.config/sxhkd/qtilerc &
 picom &
+killall redshift -q
+redshift &
+python ${HOME}/.config/polybar/polybar_wallpaper.py &
+${HOME}/.config/polybar/launch.sh &

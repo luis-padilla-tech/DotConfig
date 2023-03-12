@@ -13,7 +13,7 @@ import subprocess
 from libqtile.log_utils import logger
 from libqtile import hook
 
-theme = qtile_themes.Orange
+theme = qtile_themes.Purple
 
 @hook.subscribe.startup_once
 def on_start_of_qtile():
@@ -31,46 +31,37 @@ def on_start_or_restart():
         wallpapers = [file for file in  Path(theme.wp_dir).expanduser().iterdir()]
         wallpaper_path = random.choice(wallpapers)
 
-        for screen in qtile.screens:
-            screen.cmd_set_wallpaper(wallpaper_path,'fill')
+        # for screen in qtile.screens:
+        #     screen.cmd_set_wallpaper(wallpaper_path,'fill')
 
 mod = "mod4"
 terminal = guess_terminal()
 
 groups = [
-    Group(name='home', label=''),
-    Group(name='terminal', label=''),
-    Group(name='browser', label='', matches=[
-        Match(wm_class='brave-browser'),
+    Group(name='1', label='1'),
+    Group(name='2', label='2'),
+    Group(name='3', label='3',matches=[
+        Match(wm_class='discord')
     ]),
-    Group(name='code', label='', matches=[
+    Group(name='4', label='4', matches=[
         Match(wm_class='vscodium'),
     ]),
-    Group(name='games', label='', matches=[
-        Match(wm_class='desmume')
+    Group(name='5', label='5', matches=[
+        Match(wm_class='desmume'),
+        Match(wm_class='Steam'),
+        Match(wm_class='Minecraft Launcher'),
     ]),
-    Group(name='spotify', label='', matches=[
-        Match(wm_class='firefox'),
+    Group(name='6', label='6', matches=[
+        Match(wm_class='Spotify'),
     ]),
-    Group(name='rss', label='', matches=[
+    Group(name='7', label='7', matches=[
         Match(wm_class='liferea')
     ]),
-    Group(name='manager', label='', matches=[
-        Match(wm_class='keepass2')
-    ]),
-    Group(name='vpn', label='')
-
+    Group(name='8', label='8'),
+    Group(name='9', label='9')
 ]
 
 keys = [
-
-    # Switch between app windows
-    Key([mod], "h", lazy.layout.left(), desc="Move focus to left"),
-    Key([mod], "l", lazy.layout.right(), desc="Move focus to right"),
-    Key([mod], "j", lazy.layout.down(), desc="Move focus down"),
-    Key([mod], "k", lazy.layout.up(), desc="Miove focus up"),
-    Key([mod], "space", lazy.layout.next(), desc="Move window focus to other window"),
-
     # Moving app windows around
     Key([mod, "shift"], "h", lazy.layout.shuffle_left(), desc="Move window to the left"),
     Key([mod, "shift"], "l", lazy.layout.shuffle_right(), desc="Move window to the right"),
@@ -82,7 +73,7 @@ keys = [
     Key([mod, "control"], "l", lazy.layout.grow_right(), desc="Grow window to the right"),
     Key([mod, "control"], "j", lazy.layout.grow_down(), desc="Grow window down"),
     Key([mod, "control"], "k", lazy.layout.grow_up(), desc="Grow window up"),
-    Key([mod], "n", lazy.layout.normalize(), desc="Reset all window sizes"),
+    Key([mod, "shift"], "n", lazy.layout.normalize(), desc="Reset all window sizes"),
     # Toggle between split and unsplit sides of stack.
     # Split = all windows displayed
     # Unsplit = 1 window displayed, like Max layout, but still with
@@ -93,14 +84,9 @@ keys = [
         lazy.layout.toggle_split(),
         desc="Toggle between split and unsplit sides of stack",
     ),
-    Key([mod], 'e', lazy.spawn(f'{terminal} -e ranger'), desc='Open File Explorer'),
-    Key([mod], 'b', lazy.spawn('brave'), desc='Open Browser'),
-    Key([mod], "Return", lazy.spawn(terminal), desc="Launch terminal"),
-    Key([mod], "Tab", lazy.next_layout(), desc="Toggle between layouts"),
     Key([mod], "q", lazy.window.kill(), desc="Kill focused window"),
     Key([mod, "control"], "r", lazy.reload_config(), desc="Reload the config"),
     Key([mod, "control"], "q", lazy.shutdown(), desc="Shutdown Qtile"),
-    Key([mod], "r", lazy.spawncmd(), desc="Spawn a command using a prompt widget"),
 ]
 
 for index, _group in enumerate(groups):
@@ -139,50 +125,7 @@ widget_defaults = dict(
 extension_defaults = widget_defaults.copy()
 SEP_ICON = ''
 
-screens = [
-    Screen(
-        top=bar.Bar(
-            [
-                widget.GroupBox(highlight_method='block', disable_drag=True, active=theme.active, inactive=theme.inactive, block_highlight_text_color=theme.foreground),
-                widget.Prompt(),
-                widget.Spacer(length=bar.STRETCH),
-                widget.Net(interface='wlan0', prefix='M',format='{down}:{up}'),
-                widget.TextBox(text=SEP_ICON),
-                widget.CPU(format='{load_percent}%'),
-                widget.TextBox(text=SEP_ICON),
-                widget.Memory(measure_mem='G', format='{MemUsed:.2f}{mm}'),
-                widget.TextBox(text=SEP_ICON),
-                widget.Clock(format="%H:%M %m/%d/%Y"),
-                widget.TextBox(text=SEP_ICON),
-                widget.PulseVolume(limit_max_volume=True),
-                widget.TextBox(text=SEP_ICON),
-                widget.QuickExit(default_text='',countdown_format='{}'),
-            ],
-            36,
-        ),
-    ),
- Screen(
-        top=bar.Bar(
-            [
-                widget.GroupBox(highlight_method='block', disable_drag=True, active=theme.active, inactive=theme.inactive, block_highlight_text_color=theme.foreground),
-                widget.Prompt(),
-                widget.Spacer(length=bar.STRETCH),
-                widget.Net(interface='wlan0', prefix='M',format='{down}:{up}'),
-                widget.TextBox(text=SEP_ICON),
-                widget.CPU(format='{load_percent}%'),
-                widget.TextBox(text=SEP_ICON),
-                widget.Memory(measure_mem='G', format='{MemUsed:.2f}{mm}'),
-                widget.TextBox(text=SEP_ICON),
-                widget.Clock(format="%H:%M %m/%d/%Y"),
-                widget.TextBox(text=SEP_ICON),
-                widget.PulseVolume(limit_max_volume=True),
-                widget.TextBox(text=SEP_ICON),
-                widget.QuickExit(default_text='',countdown_format='{}'),
-            ],
-            36,
-        ),
-    ),
-]
+screens = [Screen(), Screen()]
 
 # Drag floating layouts.
 mouse = [

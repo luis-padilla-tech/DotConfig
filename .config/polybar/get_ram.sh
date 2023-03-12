@@ -1,0 +1,1 @@
+free -h | awk '/free/ {getline; print $3}'
